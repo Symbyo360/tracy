@@ -119,10 +119,10 @@ private:
 
         flat_hash_map<uint64_t, SourceLocation, nohash<uint64_t>> sourceLocation;
         Vector<SourceLocation*> sourceLocationPayload;
-        flat_hash_map<SourceLocation*, uint32_t, SourceLocationHasher, SourceLocationComparator> sourceLocationPayloadMap;
+        flat_hash_map<SourceLocation*, srcloc_t, SourceLocationHasher, SourceLocationComparator> sourceLocationPayloadMap;
         Vector<uint64_t> sourceLocationExpand;
 #ifndef TRACY_NO_STATISTICS
-        flat_hash_map<int32_t, SourceLocationZones, nohash<int32_t>> sourceLocationZones;
+        flat_hash_map<srcloc_t, SourceLocationZones, nohash<srcloc_t>> sourceLocationZones;
         bool sourceLocationZonesReady;
 #else
         flat_hash_map<int32_t, uint64_t> sourceLocationZonesCnt;
@@ -219,7 +219,7 @@ public:
     const char* GetString( const StringRef& ref ) const;
     const char* GetString( const StringIdx& idx ) const;
     const char* GetThreadString( uint64_t id ) const;
-    const SourceLocation& GetSourceLocation( int32_t srcloc ) const;
+    const SourceLocation& GetSourceLocation( srcloc_t srcloc ) const;
 
     const char* GetZoneName( const ZoneEvent& ev ) const;
     const char* GetZoneName( const ZoneEvent& ev, const SourceLocation& srcloc ) const;
@@ -229,11 +229,11 @@ public:
     tracy_force_inline const Vector<ZoneEvent*>& GetZoneChildren( int32_t idx ) const { return m_data.m_zoneChildren[idx]; }
     tracy_force_inline const Vector<GpuEvent*>& GetGpuChildren( int32_t idx ) const { return m_data.m_gpuChildren[idx]; }
 
-    std::vector<int32_t> GetMatchingSourceLocation( const char* query ) const;
+    std::vector<srcloc_t> GetMatchingSourceLocation( const char* query ) const;
 
 #ifndef TRACY_NO_STATISTICS
-    const SourceLocationZones& GetZonesForSourceLocation( int32_t srcloc ) const;
-    const flat_hash_map<int32_t, SourceLocationZones, nohash<int32_t>>& GetSourceLocationZones() const { return m_data.sourceLocationZones; }
+    const SourceLocationZones& GetZonesForSourceLocation( srcloc_t srcloc ) const;
+    const flat_hash_map<srcloc_t, SourceLocationZones, nohash<srcloc_t>>& GetSourceLocationZones() const { return m_data.sourceLocationZones; }
     bool AreSourceLocationZonesReady() const { return m_data.sourceLocationZonesReady; }
 #endif
 
@@ -302,8 +302,8 @@ private:
 
     tracy_force_inline void CheckSourceLocation( uint64_t ptr );
     void NewSourceLocation( uint64_t ptr );
-    tracy_force_inline uint32_t ShrinkSourceLocation( uint64_t srcloc );
-    uint32_t NewShrinkedSourceLocation( uint64_t srcloc );
+    tracy_force_inline srcloc_t ShrinkSourceLocation( uint64_t srcloc );
+    srcloc_t NewShrinkedSourceLocation( uint64_t srcloc );
 
     tracy_force_inline void MemAllocChanged( int64_t time );
     void CreateMemAllocPlot();
@@ -381,9 +381,9 @@ private:
     GpuCtxData* m_gpuCtxMap[256];
     flat_hash_map<uint64_t, StringLocation, nohash<uint64_t>> m_pendingCustomStrings;
     flat_hash_map<uint64_t, uint32_t> m_pendingCallstacks;
-    flat_hash_map<uint64_t, int32_t, nohash<uint64_t>> m_pendingSourceLocationPayload;
+    flat_hash_map<uint64_t, srcloc_t, nohash<uint64_t>> m_pendingSourceLocationPayload;
     Vector<uint64_t> m_sourceLocationQueue;
-    flat_hash_map<uint64_t, uint32_t, nohash<uint64_t>> m_sourceLocationShrink;
+    flat_hash_map<uint64_t, srcloc_t, nohash<uint64_t>> m_sourceLocationShrink;
     flat_hash_map<uint64_t, ThreadData*, nohash<uint64_t>> m_threadMap;
     flat_hash_map<uint64_t, NextCallstack, nohash<uint64_t>> m_nextCallstack;
 

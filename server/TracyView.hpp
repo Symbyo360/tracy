@@ -263,7 +263,7 @@ private:
         };
 
         bool show = false;
-        std::vector<int32_t> match;
+        std::vector<srcloc_t> match;
         std::map<uint64_t, Group> groups;
         size_t processed;
         int selMatch = 0;
@@ -293,7 +293,7 @@ private:
             processed = 0;
         }
 
-        void ShowZone( int32_t srcloc, const char* name )
+        void ShowZone( srcloc_t srcloc, const char* name )
         {
             show = true;
             Reset();
@@ -316,7 +316,7 @@ private:
         std::thread loadThread;
         int badVer = 0;
         char pattern[1024] = {};
-        std::vector<int32_t> match[2];
+        std::vector<srcloc_t> match[2];
         int selMatch[2] = { 0, 0 };
         bool logVal = false;
         bool logTime = true;

@@ -2,6 +2,7 @@
 #define __TRACYEVENT_HPP__
 
 #include <limits>
+#include <stdint.h>
 #include <string.h>
 
 #include "TracyCharUtil.hpp"
@@ -10,6 +11,8 @@
 
 namespace tracy
 {
+
+using srcloc_t = int16_t;
 
 #pragma pack( 1 )
 
@@ -76,14 +79,14 @@ struct ZoneEvent
 {
     int64_t start;
     int64_t end;
-    int32_t srcloc;
+    srcloc_t srcloc;
     int8_t cpu_start;
     int8_t cpu_end;
     StringIdx text;
     uint32_t callstack;
     StringIdx name;
 
-    // This must be last. All above is read/saved as-is.
+    // This must be last. All above is read/saved as-is (except srcloc).
     int32_t child;
 };
 
@@ -103,10 +106,10 @@ struct LockEvent
     };
 
     int64_t time;
-    int32_t srcloc;
+    srcloc_t srcloc;
     uint8_t thread;
     Type type;
-    // All above is read/saved as-is.
+    // All above is read/saved as-is (except srcloc).
 
     uint8_t lockingThread;
     uint8_t lockCount;
@@ -132,9 +135,9 @@ struct GpuEvent
     int64_t cpuEnd;
     int64_t gpuStart;
     int64_t gpuEnd;
-    int32_t srcloc;
+    srcloc_t srcloc;
     int32_t callstack;
-    // All above is read/saved as-is.
+    // All above is read/saved as-is (except srcloc).
 
     uint16_t thread;
     int32_t child;
@@ -214,7 +217,7 @@ struct GpuCtxData
 
 struct LockMap
 {
-    uint32_t srcloc;
+    srcloc_t srcloc;
     Vector<LockEvent*> timeline;
     flat_hash_map<uint64_t, uint8_t, nohash<uint64_t>> threadMap;
     std::vector<uint64_t> threadList;
