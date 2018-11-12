@@ -18,4 +18,6 @@ manual/tracy.out
 manual/tracy.pdf
 manual/tracy.synctex.gz
 manual/tracy.toc
-profiler/build/win32/packages
+profiler/build/win32/x64/
+profiler/build/win32/packages/
+profiler/build/win32/.vs/
