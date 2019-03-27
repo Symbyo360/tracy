@@ -918,6 +918,18 @@ private:
     {
         return static_cast<const Hasher &>(*this)(key);
     }
+
+	template<typename TValue>
+	size_t hash_object(const std::pair<const char*, TValue> & key)
+	{
+		return static_cast<Hasher &>(*this)(key.first);
+	}
+	template<typename TValue>
+	size_t hash_object(const std::pair<const char*, TValue> & key) const
+	{
+		return static_cast<const Hasher &>(*this)(key.first);
+	}
+
     template<typename L, typename R>
     bool compares_equal(const L & lhs, const R & rhs)
     {
