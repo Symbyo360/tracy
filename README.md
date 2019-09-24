@@ -1,3 +1,7 @@
+# Custom Changes
+
+- rename imgui folder to imgui-hidden because it collides with our imgui
+
 # Tracy Profiler
 
 [![Build status](https://ci.appveyor.com/api/projects/status/968a88arq06gm3el/branch/master?svg=true)](https://ci.appveyor.com/project/wolfpld/tracy/branch/master)
